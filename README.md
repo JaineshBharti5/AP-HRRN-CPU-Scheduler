@@ -151,10 +151,6 @@ Long job P2 (burst 20) with a steady stream of short jobs. A process split into 
 
 ---
 
-📄 Full report with all charts: [AP-HRRN: An Aging, Preemptive Variant of HRRN Scheduling](docs/AP-HRRN_An_Aging_Preemptive_Variant_of_HRRN_Scheduling.pdf)
-
----
-
 ## 👥 Team: Operating Systems, Group 11
 
 | Name | Reg. No. |
@@ -165,4 +161,4 @@ Long job P2 (burst 20) with a steady stream of short jobs. A process split into 
 | Subhanshu Singh | AP24110011104 |
 | Jainesh Bharti | AP24110010515 |
 
-SRM University AP · ⭐ Star the repo if it helped you!
+SRM University AP 
