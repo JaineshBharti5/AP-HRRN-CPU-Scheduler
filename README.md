@@ -4,7 +4,7 @@
 
 We compared two classic answers, **SJF** and **HRRN**, found where they fail, and built our own: **AP-HRRN** (*Aging Preemptive HRRN*). It's all a Python simulation, so you can run it and see.
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue) ![Tests](https://img.shields.io/badge/tests-18%20passing-brightgreen) ![Course](https://img.shields.io/badge/Operating%20Systems-Group%2011-orange)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue) ![Tests](https://img.shields.io/badge/tests-13%20passing-brightgreen) ![Course](https://img.shields.io/badge/Operating%20Systems-Group%2011-orange)
 
 ---
 
@@ -35,12 +35,31 @@ Defaults: `alpha=0.5` · `tau0=6` · `k=1.5` · `L=24` · `boost=10`
 
 ---
 
+## 📁 Project structure
+
+```
+AP-HRRN-CPU-Scheduler/
+└── cpu_scheduling/
+    ├── cpu_scheduling/        # Python backend
+    │   ├── scheduler.py       # SJF, HRRN and AP-HRRN algorithms
+    │   ├── process.py         # Process model, metrics, test cases
+    │   ├── compare.py         # Comparison tables + graphs
+    │   ├── tuning.py          # Parameter sweeps
+    │   ├── api.py             # Flask API used by the web app
+    │   ├── graphs/            # Generated charts (PNG)
+    │   ├── results/           # Generated CSV results
+    │   └── tests/             # pytest tests
+    └── frontend/              # React + Vite web app
+```
+
+---
+
 ## 🚀 Try it in 1 minute
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>/cpu_scheduling
-pip install matplotlib pytest
+git clone https://github.com/JaineshBharti5/AP-HRRN-CPU-Scheduler.git
+cd AP-HRRN-CPU-Scheduler/cpu_scheduling/cpu_scheduling
+pip install matplotlib pytest flask
 ```
 
 | Run this | You get |
@@ -48,7 +67,8 @@ pip install matplotlib pytest
 | `python scheduler.py` | Demo with Gantt charts in your terminal |
 | `python compare.py` | Comparison tables + graphs |
 | `python tuning.py` | Parameter sweeps |
-| `python -m pytest tests` | 18 tests |
+| `python -m pytest tests` | 13 tests |
+| `python api.py` | Backend API for the web app (http://127.0.0.1:5000) |
 
 **Or plug in your own processes:**
 
@@ -61,6 +81,39 @@ for name, algo in ALGORITHMS.items():
     procs, timeline = algo(jobs)
     print(name, compute_metrics(procs, timeline))
 ```
+
+---
+
+## 🖥️ Web app (React + Flask)
+
+An interactive UI to run all three schedulers and compare them visually.
+
+**Terminal 1: backend** (http://127.0.0.1:5000)
+
+```bash
+cd cpu_scheduling/cpu_scheduling
+pip install flask matplotlib
+python api.py
+```
+
+**Terminal 2: frontend** (http://localhost:5173)
+
+```bash
+cd cpu_scheduling/frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. The dev server forwards `/api` calls to the Flask backend, so start the backend first.
+
+**What you can do in the UI**
+
+- Enter processes by hand (PID, arrival, burst) and add or remove rows
+- Load built-in examples: phase 1, mixed, starvation, many short jobs, idle gap, single process, simultaneous arrival
+- Generate random workloads (count, max arrival, max burst, optional seed)
+- Tune AP-HRRN: `k`, wait limit, boost, `alpha`, `tau0`, and the burst estimator (exact or predicted)
+- See results as a metrics table, 6 metric bar charts, a waiting-time-per-process chart, a Gantt chart per algorithm, and per-process tables (start, completion, turnaround, waiting, response)
+- Run a random benchmark averaged over many workloads
 
 ---
 
@@ -118,13 +171,13 @@ CPU utilization is ~100% for all three, so nobody wastes CPU time.
 Long job P2 (burst 20) with a steady stream of short jobs. A process split into several blocks was preempted.
 
 **SJF:** long job waits till the very end
-![SJF](cpu_scheduling/graphs/gantt_starvation_sjf.png)
+![SJF](cpu_scheduling/cpu_scheduling/graphs/gantt_starvation_sjf.png)
 
 **HRRN**
-![HRRN](cpu_scheduling/graphs/gantt_starvation_hrrn.png)
+![HRRN](cpu_scheduling/cpu_scheduling/graphs/gantt_starvation_hrrn.png)
 
 **AP-HRRN**
-![AP-HRRN](cpu_scheduling/graphs/gantt_starvation_aphrrn.png)
+![AP-HRRN](cpu_scheduling/cpu_scheduling/graphs/gantt_starvation_aphrrn.png)
 </details>
 
 <details>
@@ -161,4 +214,4 @@ Long job P2 (burst 20) with a steady stream of short jobs. A process split into 
 | Subhanshu Singh | AP24110011104 |
 | Jainesh Bharti | AP24110010515 |
 
-SRM University AP 
+SRM University AP
